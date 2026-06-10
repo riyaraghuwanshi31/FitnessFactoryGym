@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fitness Factory Gym — Kopri, Thane East</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF6B1A;
+    --orange-dark: #CC4D00;
+    --orange-glow: rgba(255,107,26,0.18);
+    --black: #0D0D0D;
+    --dark: #141414;
+    --dark2: #1C1C1C;
+    --dark3: #242424;
+    --gray: #888;
+    --gray-light: #b0b0b0;
+    --white: #F5F0EB;
+    --ff: 'Bebas Neue', sans-serif;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--orange);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s, width 0.2s, height 0.2s, background 0.2s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid rgba(255,107,26,0.5);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.25s, height 0.25s;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,107,26,0.1);
+  }
+  .nav-logo {
+    font-family: var(--ff);
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 13px; font-weight: 300; letter-spacing: 0.1em;
+    text-transform: uppercase; text-decoration: none;
+    color: var(--gray-light);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange);
+    color: #fff !important;
+    padding: 9px 20px;
+    border-radius: 4px;
+    font-weight: 400 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--orange-dark) !important; color: #fff !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 80% 40%, rgba(255,107,26,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 20% 60%, rgba(255,107,26,0.06) 0%, transparent 70%),
+      linear-gradient(180deg, #0d0d0d 0%, #1a0d00 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,107,26,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,26,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 80% 30%, black 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+    position: relative;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 40px; height: 1px;
+    background: var(--orange);
+  }
+  .hero h1 {
+    font-family: var(--ff);
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9;
+    color: var(--white);
+    position: relative;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero h1 .accent { color: var(--orange); display: block; }
+  .hero-sub {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--gray-light);
+    max-width: 400px;
+    line-height: 1.7;
+    margin-top: 24px;
+    position: relative;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 16px; align-items: center;
+    margin-top: 36px;
+    position: relative;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: #fff;
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: none;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+  .btn-ghost {
+    font-size: 13px; font-weight: 300;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gray-light);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--white); }
+  .btn-ghost svg { width: 16px; height: 16px; transition: transform 0.2s; }
+  .btn-ghost:hover svg { transform: translateX(4px); }
+
+  .hero-stats {
+    position: absolute; right: 48px; bottom: 80px;
+    display: flex; flex-direction: column; gap: 28px;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .stat-item { text-align: right; }
+  .stat-num {
+    font-family: var(--ff);
+    font-size: 48px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px; font-weight: 300;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+
+  .open-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(30,180,80,0.1);
+    border: 1px solid rgba(30,180,80,0.25);
+    color: #4ade80;
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 999px;
+    position: absolute; top: 120px; right: 48px;
+    animation: fadeIn 1s 0.5s ease both;
+  }
+  .open-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    background: var(--orange);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-track span {
+    font-family: var(--ff);
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #fff;
+    padding: 0 32px;
+  }
+  .marquee-track span.sep { color: rgba(255,255,255,0.4); padding: 0; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTIONS */
+  section { padding: 100px 48px; }
+  .section-label {
+    font-size: 11px; font-weight: 300;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 32px; height: 1px;
+    background: var(--orange);
+  }
+  .section-heading {
+    font-family: var(--ff);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 48px;
+  }
+  .section-heading em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+  }
+
+  /* FACILITIES */
+  #facilities { background: var(--dark); }
+  .facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+  }
+  .facility-card {
+    background: var(--dark2);
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    border: 1px solid rgba(255,107,26,0.06);
+  }
+  .facility-card:hover { background: var(--dark3); }
+  .facility-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--orange);
+    transition: width 0.35s ease;
+  }
+  .facility-card:hover::after { width: 100%; }
+  .facility-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .facility-card h3 {
+    font-family: var(--ff);
+    font-size: 26px;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .facility-card p {
+    font-size: 13px; font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+  .facility-num {
+    position: absolute; top: 20px; right: 24px;
+    font-family: var(--ff);
+    font-size: 64px;
+    color: rgba(255,107,26,0.06);
+    line-height: 1;
+  }
+
+  /* REVIEWS */
+  #reviews { background: var(--black); }
+  .rating-hero {
+    display: flex; align-items: center; gap: 24px;
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .big-rating {
+    font-family: var(--ff);
+    font-size: 96px;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .stars-row { display: flex; gap: 4px; margin-bottom: 6px; }
+  .star {
+    width: 18px; height: 18px;
+    background: var(--orange);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+  .star.empty { background: rgba(255,255,255,0.1); }
+  .rating-text {
+    font-size: 14px; font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 360px;
+  }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+  }
+  .review-card {
+    background: var(--dark);
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+  .review-card::before {
+    content: '"';
+    font-family: Georgia, serif;
+    font-size: 80px;
+    color: rgba(255,107,26,0.12);
+    position: absolute;
+    top: 12px; right: 20px;
+    line-height: 1;
+  }
+  .review-stars { display: flex; gap: 3px; margin-bottom: 16px; }
+  .review-s {
+    width: 12px; height: 12px;
+    background: var(--orange);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+  .review-s.e { background: rgba(255,255,255,0.1); }
+  .review-text {
+    font-size: 14px; font-weight: 300;
+    color: var(--gray-light);
+    line-height: 1.8;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .reviewer {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--dark);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+  .contact-left {}
+  .contact-info { margin-top: 48px; display: flex; flex-direction: column; gap: 0; }
+  .contact-row {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .contact-row:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+  .c-icon {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,107,26,0.3);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    color: var(--orange);
+  }
+  .c-label {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+  .c-value {
+    font-size: 14px; font-weight: 300;
+    color: var(--white);
+    line-height: 1.7;
+  }
+  .c-value a { color: var(--orange); text-decoration: none; }
+  .c-value a:hover { text-decoration: underline; }
+
+  .contact-right {
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+  }
+  .hours-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,107,26,0.12);
+    border-radius: 4px;
+    padding: 32px;
+    margin-top: 48px;
+  }
+  .hours-card h3 {
+    font-family: var(--ff);
+    font-size: 28px;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+  }
+  .hours-row:last-child { border-bottom: none; }
+  .h-day { font-weight: 300; color: var(--gray); }
+  .h-time { font-weight: 400; color: var(--white); }
+  .h-today .h-day { color: var(--orange); }
+  .h-today .h-time { color: var(--orange); }
+
+  .map-placeholder {
+    background: var(--dark2);
+    border: 1px solid rgba(255,107,26,0.12);
+    border-radius: 4px;
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+    margin-top: 16px;
+    font-size: 13px; color: var(--gray);
+    cursor: none;
+    transition: border-color 0.2s;
+    text-decoration: none;
+  }
+  .map-placeholder:hover { border-color: var(--orange); color: var(--orange-dark); }
+  .map-placeholder svg { width: 24px; height: 24px; color: var(--orange); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-logo {
+    font-family: var(--ff);
+    font-size: 22px;
+    color: var(--white);
+  }
+  .footer-logo span { color: var(--orange); }
+  footer p {
+    font-size: 12px; font-weight: 300;
+    color: var(--gray);
+    letter-spacing: 0.05em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 0 24px 64px; }
+    .hero-stats { position: static; flex-direction: row; gap: 32px; margin-top: 40px; }
+    .stat-item { text-align: left; }
+    .open-badge { position: static; margin-bottom: 24px; display: inline-flex; }
+    section { padding: 64px 24px; }
+    #contact { grid-template-columns: 1fr; gap: 0; }
+    footer { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Fitness <span>Factory</span></div>
+  <ul class="nav-links">
+    <li><a href="#facilities">Facilities</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="tel:09136740987" class="nav-cta">Call Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="open-badge">
+    <span class="open-dot"></span>
+    Open · Closes 10:30 PM
+  </div>
+
+  <div style="position:relative;">
+    <div class="hero-eyebrow">Kopri · Thane East · Est. Fitness First</div>
+    <h1>
+      Fitness
+      <span class="accent">Factory.</span>
+    </h1>
+    <p class="hero-sub">Where strength meets community. Advanced machines, clean environment, and the perfect vibe for your workout.</p>
+    <div class="hero-actions">
+      <a href="tel:09136740987" class="btn-primary">Call: 091367 40987</a>
+      <a href="#facilities" class="btn-ghost">
+        Explore facilities
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">4.4★</div>
+      <div class="stat-label">Google Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Facilities</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Days a week</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Free Weights</span><span class="sep">·</span>
+    <span>Cardio Zone</span><span class="sep">·</span>
+    <span>Advanced Machines</span><span class="sep">·</span>
+    <span>Personal Training</span><span class="sep">·</span>
+    <span>Clean Environment</span><span class="sep">·</span>
+    <span>Stretching Area</span><span class="sep">·</span>
+    <span>Expert Trainers</span><span class="sep">·</span>
+    <span>Free Weights</span><span class="sep">·</span>
+    <span>Cardio Zone</span><span class="sep">·</span>
+    <span>Advanced Machines</span><span class="sep">·</span>
+    <span>Personal Training</span><span class="sep">·</span>
+    <span>Clean Environment</span><span class="sep">·</span>
+    <span>Stretching Area</span><span class="sep">·</span>
+    <span>Expert Trainers</span><span class="sep">·</span>
+  </div>
+</div>
+
+<!-- FACILITIES -->
+<section id="facilities">
+  <div class="section-label reveal">What we offer</div>
+  <div class="section-heading reveal">Our <em>World-Class</em><br>Facilities</div>
+  <div class="facilities-grid">
+    <div class="facility-card reveal">
+      <span class="facility-icon">🏋️</span>
+      <div class="facility-num">01</div>
+      <h3>Free Weights</h3>
+      <p>Full range of dumbbells, barbells, and plates for every level of lifter.</p>
+    </div>
+    <div class="facility-card reveal">
+      <span class="facility-icon">⚙️</span>
+      <div class="facility-num">02</div>
+      <h3>Advanced Machines</h3>
+      <p>Well-maintained, modern equipment designed for maximum performance.</p>
+    </div>
+    <div class="facility-card reveal">
+      <span class="facility-icon">🚴</span>
+      <div class="facility-num">03</div>
+      <h3>Cardio Zone</h3>
+      <p>Treadmills, stationary bikes, and ellipticals for your endurance training.</p>
+    </div>
+    <div class="facility-card reveal">
+      <span class="facility-icon">🧘</span>
+      <div class="facility-num">04</div>
+      <h3>Stretching Area</h3>
+      <p>Dedicated warm-up and cool-down space for injury-free training.</p>
+    </div>
+    <div class="facility-card reveal">
+      <span class="facility-icon">👥</span>
+      <div class="facility-num">05</div>
+      <h3>Expert Trainers</h3>
+      <p>Co-operative, experienced trainers on the floor to guide your journey.</p>
+    </div>
+    <div class="facility-card reveal">
+      <span class="facility-icon">✨</span>
+      <div class="facility-num">06</div>
+      <h3>Clean Environment</h3>
+      <p>Consistently clean, hygienic space with the perfect workout atmosphere.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-label reveal">Member feedback</div>
+  <div class="section-heading reveal">What Our<br><em>Members Say</em></div>
+  <div class="rating-hero reveal">
+    <div class="big-rating">4.4</div>
+    <div>
+      <div class="stars-row">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star empty"></div>
+      </div>
+      <p class="rating-text">Highly rated by members for advanced machines, clean space, and cooperative trainers. A trusted fitness destination in Thane East.</p>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="review-stars">
+        <div class="review-s"></div><div class="review-s"></div><div class="review-s"></div><div class="review-s"></div><div class="review-s"></div>
+      </div>
+      <p class="review-text">"Clean environment, good equipment &amp; perfect vibe for workout!"</p>
+      <div class="reviewer">— Google Reviewer</div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">
+        <div class="review-s"></div><div class="review-s"></div><div class="review-s"></div><div class="review-s"></div><div class="review-s"></div>
+      </div>
+      <p class="review-text">"Advance and well maintained machines. Very co-operative staffs."</p>
+      <div class="reviewer">— Google Reviewer</div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">
+        <div class="review-s"></div><div class="review-s"></div><div class="review-s"></div><div class="review-s e"></div><div class="review-s e"></div>
+      </div>
+      <p class="review-text">"The place lacks space when there is an increase in number of people."</p>
+      <div class="reviewer">— Google Reviewer</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-left">
+    <div class="section-label reveal">Get in touch</div>
+    <div class="section-heading reveal" style="font-size: clamp(36px,5vw,60px);">Find <em>Us</em> Here</div>
+    <div class="contact-info reveal">
+      <div class="contact-row">
+        <div class="c-icon">📍</div>
+        <div>
+          <div class="c-label">Address</div>
+          <div class="c-value">Office no.103, 1st Floor, Deep Kiran CHS,<br>Chikla Devi Road, Thanekarwadi,<br>Thane East, Maharashtra 400603</div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="c-icon">📞</div>
+        <div>
+          <div class="c-label">Phone</div>
+          <div class="c-value"><a href="tel:09136740987">091367 40987</a></div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="c-icon">📍</div>
+        <div>
+          <div class="c-label">Area Served</div>
+          <div class="c-value">Kopri, Thane East</div>
+        </div>
+      </div>
+    </div>
+    <a href="https://maps.google.com/?q=Fitness+Factory+Gym+Kopri+Thane" target="_blank" class="map-placeholder reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+      </svg>
+      <span>Open in Google Maps →</span>
+    </a>
+  </div>
+
+  <div class="contact-right reveal">
+    <div class="hours-card">
+      <h3>Opening Hours</h3>
+      <div class="hours-row h-today">
+        <span class="h-day">Monday – Friday</span>
+        <span class="h-time">5:30 AM – 10:30 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="h-day">Saturday</span>
+        <span class="h-time">6:00 AM – 10:30 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="h-day">Sunday</span>
+        <span class="h-time">7:00 AM – 10:30 PM</span>
+      </div>
+    </div>
+    <div style="margin-top: 24px; padding: 24px; background: var(--orange); border-radius: 4px; text-align: center;">
+      <p style="font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 8px; font-weight: 300;">Ready to join?</p>
+      <p style="font-family: var(--ff); font-size: 36px; color: #fff; margin-bottom: 16px; line-height: 1;">Start Today</p>
+      <a href="tel:09136740987" class="btn-primary" style="background: #fff; color: var(--orange); font-size: 12px;">Call 091367 40987</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Fitness <span>Factory</span></div>
+  <p>Office no.103, Deep Kiran CHS, Thane East, Maharashtra 400603</p>
+  <p>© 2025 Fitness Factory Gym. All rights reserved.</p>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
